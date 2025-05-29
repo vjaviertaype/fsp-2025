@@ -1,4 +1,8 @@
-type RoleUser = "admin" | "guess" | "user";
+enum RoleUser {
+  "admin",
+  "premium",
+  "user",
+}
 
 interface IUser {
   nickname: string;
@@ -36,21 +40,9 @@ abstract class User implements IUser {
     return this.password === password;
   }
 
-  private changePassword(oldPassword: string, newPassword: string) {
-    if (oldPassword === this.password) {
-      this.password = newPassword;
-    }
-  }
-
   public authenticate(password: string): boolean {
     return this.checkPassword(password);
   }
-}
-
-interface IAdmin {
-  addUser(user: User): void;
-  removeUser(user: User): void;
-  getAllUsers(): User[];
 }
 
 interface IPremiumUser {
@@ -59,13 +51,8 @@ interface IPremiumUser {
 }
 
 class PremiumUser extends User implements IPremiumUser {
-  constructor(
-    nickname: string,
-    email: string,
-    role: RoleUser,
-    password: string
-  ) {
-    super(nickname, email, role, password);
+  constructor(nickname: string, email: string, password: string) {
+    super(nickname, email, RoleUser.premium, password);
   }
 
   changeEmail(oldEmail: string, newEmail: string): void {
@@ -77,11 +64,17 @@ class PremiumUser extends User implements IPremiumUser {
   }
 }
 
+interface IAdmin {
+  addUser(user: User): void;
+  removeUser(user: User): void;
+  getAllUsers(): User[];
+}
+
 class Admin extends User implements IAdmin, IPremiumUser {
   private users: User[] = [];
 
   constructor(nickname: string, email: string, password: string) {
-    super(nickname, email, "admin", password);
+    super(nickname, email, RoleUser.admin, password);
   }
 
   addUser(user: User) {
@@ -115,12 +108,7 @@ class Admin extends User implements IAdmin, IPremiumUser {
 const admin = new Admin("adminMaster", "admin@dominio.com", "1234");
 
 // Crear un usuario premium
-const premiumUser = new PremiumUser(
-  "hauro",
-  "hauro@correo.com",
-  "user",
-  "abcd"
-);
+const premiumUser = new PremiumUser("hauro", "hauro@correo.com", "abcd");
 
 // Autenticar usuario premium
 if (premiumUser.authenticate("abcd")) {
