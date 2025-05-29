@@ -12,6 +12,10 @@
   "license": "ISC",
   "packageManager": "pnpm@10.11.0",
   "devDependencies": {
+    "@types/uuid": "^10.0.0",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "uuid": "^11.1.0"
   }
 }
