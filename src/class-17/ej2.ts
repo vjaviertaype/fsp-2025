@@ -6,15 +6,12 @@ type ProductCart = {
   discount?: number;
 };
 
-type AddProductMethod = (product: ProductCart) => void;
-type RemoveProductMethod = (id: number) => void;
-type MethodReturnVoid = () => void;
-
+// Santi: ... Son un poco redundantes los tipos que tenes en las lineas 35 a 37 ya que podrías simplementer ponerlos en el type ShioppingCart :pepeheart:
 type ShoppingCart = {
   products: ProductCart[];
-  addProduct: AddProductMethod;
-  removeProduct: RemoveProductMethod;
-  calculateTotalPrice: MethodReturnVoid;
+  addProduct: (product: ProductCart) => void;
+  removeProduct: (id: number) => void;
+  calculateTotalPrice: () => void;
 };
 
 const shoppingCart: ShoppingCart = {
